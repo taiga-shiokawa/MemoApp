@@ -1,11 +1,22 @@
-import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { Alert, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import Button from "../../components/Button";
 import { router } from "expo-router";
 import { useState } from "react";
+import { signInWithEmailAndPassword } from "@firebase/auth";
+import { auth } from "../../config";
 
-const handlePress =(): void => {
+const handlePress =(email: string, password: string): void => {
   // ログイン処理
-  router.replace("/memo/list");
+  signInWithEmailAndPassword(auth, email, password)
+    .then((userCredential) => {
+      console.log(userCredential.user.uid);
+      router.replace("/memo/list");
+    })
+    .catch((error) => {
+      const { code, message } = error;
+      console.log(code, message);
+      Alert.alert(message);
+    })
 }
 
 const goToSignUp = (): void => {
@@ -42,7 +53,7 @@ const LogIn = (): JSX.Element => {
           textContentType="password"
         />
         {/* 送信ボタン */}
-        <Button label="submit" onPress={handlePress}/>
+        <Button label="submit" onPress={() => {handlePress(email, password)}}/>
 
         {/* アサインアップページへ遷移 */}
         <View style={styles.footer}>

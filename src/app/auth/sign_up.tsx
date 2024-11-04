@@ -1,16 +1,35 @@
-import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import {
+  Alert,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import Button from "../../components/Button";
 import { router } from "expo-router";
 import { useState } from "react";
+import { createUserWithEmailAndPassword } from "@firebase/auth";
+import { auth } from "../../config";
 
-const handlePress = () :void => {
+const handlePress = (email: string, password: string): void => {
   // 会員登録処理
-  router.push("/memo/list");
-}
+  console.log(email, password);
+  createUserWithEmailAndPassword(auth, email, password).then(
+    (userCredential) => {
+      console.log(userCredential.user.uid);
+      router.replace("/memo/list");
+    })
+    .catch((error) => {
+      const { code, message } = error;
+      console.log(code, message);
+      Alert.alert(message);
+    });
+};
 
 const goToLogIn = (): void => {
   router.replace("/auth/log_in");
-}
+};
 
 const SignUp = (): JSX.Element => {
   const [email, setEmail] = useState("");
@@ -18,31 +37,39 @@ const SignUp = (): JSX.Element => {
 
   return (
     <View style={styles.container}>
-
       {/* Title */}
       <View style={styles.inner}>
         <Text style={styles.title}>Sign Up</Text>
         {/* Input */}
-        <TextInput 
-          style={styles.input} 
+        <TextInput
+          style={styles.input}
           value={email}
-          onChangeText={(text) => {setEmail(text)}}
+          onChangeText={(text) => {
+            setEmail(text);
+          }}
           autoCapitalize="none"
           keyboardType="email-address"
           placeholder="Email address"
           textContentType="emailAddress"
         />
-        <TextInput 
-          style={styles.input} 
-          value={password} 
-          onChangeText={(text) => {setPassword(text)}}
+        <TextInput
+          style={styles.input}
+          value={password}
+          onChangeText={(text) => {
+            setPassword(text);
+          }}
           autoCapitalize="none"
           secureTextEntry
           placeholder="Password"
           textContentType="password"
         />
         {/* 送信ボタン */}
-        <Button label="submit" onPress={handlePress}/>
+        <Button
+          label="submit"
+          onPress={() => {
+            handlePress(email, password);
+          }}
+        />
 
         {/* ログインページへ遷移 */}
         <View style={styles.footer}>
@@ -51,7 +78,6 @@ const SignUp = (): JSX.Element => {
             <Text style={styles.footerLink}>Log in.</Text>
           </TouchableOpacity>
         </View>
-
       </View>
     </View>
   );
