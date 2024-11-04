@@ -1,13 +1,16 @@
 import { Text, View, ScrollView, StyleSheet } from "react-native";
 import CircleButton from "../../components/CircleButton";
 import { Entypo } from "@expo/vector-icons";
-import { router } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 
 const handlePress = (): void => {
   router.push("/memo/edit");
 }
 
 const Detail = (): JSX.Element => {
+  // メモのidを受け取る
+  const { id } = useLocalSearchParams();
+  console.log(`Memo id: ${id}`);
   return (
     <View style={styles.container}>
 
