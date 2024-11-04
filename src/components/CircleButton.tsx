@@ -3,12 +3,13 @@ import { StyleSheet, Text, TouchableOpacity, type ViewStyle } from "react-native
 interface Props {
   children: JSX.Element;
   style?: ViewStyle;
+  disabled?: boolean;
   onPress?: () => void;
 }
 const CircleButton = (props: Props):JSX.Element => {
-  const { children, style, onPress } = props;
+  const { children, style, onPress, disabled } = props;
   return (
-    <TouchableOpacity onPress={onPress} style={[styles.circleButton, style]}>
+    <TouchableOpacity onPress={onPress} disabled={disabled} style={[styles.circleButton, style]}>
       <Text style={styles.circleButtonLabel}>{ children }</Text>
     </TouchableOpacity>
   )
