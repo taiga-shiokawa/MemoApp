@@ -1,13 +1,15 @@
 import { Text, View, ScrollView, StyleSheet } from "react-native";
-import Header from "../../components/Header";
 import CircleButton from "../../components/CircleButton";
 import { Entypo } from "@expo/vector-icons";
+import { router } from "expo-router";
+
+const handlePress = (): void => {
+  router.push("/memo/edit");
+}
 
 const Detail = (): JSX.Element => {
   return (
     <View style={styles.container}>
-      {/* Common header */}
-      <Header />
 
       {/* Memo detail title  */}
       <View style={styles.memoHeader}>
@@ -24,7 +26,7 @@ const Detail = (): JSX.Element => {
       </ScrollView>
 
       {/* Memo edit button */}
-      <CircleButton style={{ top: 160, bottom: "auto" }}>
+      <CircleButton onPress={handlePress} style={{ top: 60, bottom: "auto" }}>
         <Entypo name="edit" size={24} color="#ffffff" />
       </CircleButton>
     </View>

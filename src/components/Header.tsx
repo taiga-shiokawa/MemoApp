@@ -1,5 +1,6 @@
 import { Text, View, StyleSheet } from "react-native";
 
+// 使っていない
 const Header = (): JSX.Element => {
   return (
     <View style={styles.header}>
