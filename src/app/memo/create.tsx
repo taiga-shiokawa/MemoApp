@@ -2,22 +2,46 @@ import { KeyboardAvoidingView, TextInput, View, StyleSheet } from "react-native"
 import CircleButton from "../../components/CircleButton"
 import { Feather } from "@expo/vector-icons"
 import { router } from "expo-router"
+import { addDoc, collection, Timestamp } from "firebase/firestore"
+import { auth, db } from "../../config"
+import { useState } from "react"
 
-const handlePress = (): void => {
-  router.back();
+const handlePress = (bodyText: string): void => {
+  if (auth.currentUser === null) { return }
+  const ref = collection(db, `users/${auth.currentUser?.uid}/memos`);
+  // async awaitを使ってもいい
+  addDoc(ref, {
+    bodyText: bodyText,
+    updatedAt: Timestamp.fromDate(new Date()), // firebaseではTimestampを使う
+  })
+  .then((docRef) => {
+    console.log("success", docRef.id);
+    router.back();
+  })
+  .catch((error) => {
+    const { code, message } = error;
+    console.log(code, message);
+  })
 }
 
 const Create = ():JSX.Element =>{
+  const [bodyText, setBodyText] = useState("");
   return (
     <KeyboardAvoidingView behavior="height" style={styles.container}>
 
-      {/* Edit contents */}
+      {/* Create contents */}
       <View style={styles.inputContainer}>
-        <TextInput multiline style={styles.input} value=""/>
+        <TextInput 
+          multiline 
+          style={styles.input} 
+          value={bodyText}
+          onChangeText={(text) => {setBodyText(text)}}
+          autoCapitalize="none"
+        />
       </View>
 
-      {/* Edit finish button */}
-      <CircleButton onPress={handlePress}>
+      {/* Add button */}
+      <CircleButton onPress={() => {handlePress(bodyText)}}>
         <Feather name="check" size={40}/>
       </CircleButton>
     </KeyboardAvoidingView>
