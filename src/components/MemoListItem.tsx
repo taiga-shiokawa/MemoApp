@@ -1,4 +1,5 @@
-import { StyleSheet, Text, View } from "react-native"
+import { AntDesign } from "@expo/vector-icons";
+import { StyleSheet, Text, View, TouchableOpacity } from "react-native"
 
 const MemoListItem = (): JSX.Element => {
   return (
@@ -8,7 +9,9 @@ const MemoListItem = (): JSX.Element => {
         <Text style={styles.memoListItemDate}>2024年11月3日 10:00</Text>
       </View>
       <View>
-        <Text>X</Text>
+        <TouchableOpacity>
+        <AntDesign name="delete" size={24} color="#b0b0b0" />
+        </TouchableOpacity>
       </View>
     </View>
   )
