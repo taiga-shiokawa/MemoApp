@@ -7,8 +7,8 @@ import { Memo } from "../../types/memo";
 import { auth, db } from "../../config";
 import { doc, onSnapshot } from "firebase/firestore";
 
-const handlePress = (): void => {
-  router.push("/memo/edit");
+const handlePress = (id: string): void => {
+  router.push({ pathname: "/memo/edit", params: { id } });
 }
 
 const Detail = (): JSX.Element => {
@@ -48,7 +48,7 @@ const Detail = (): JSX.Element => {
       </ScrollView>
 
       {/* Memo edit button */}
-      <CircleButton onPress={handlePress} style={{ top: 60, bottom: "auto" }}>
+      <CircleButton onPress={() => {handlePress(String(id))}} style={{ top: 60, bottom: "auto" }}>
         <Entypo name="edit" size={24} color="#ffffff" />
       </CircleButton>
     </View>
