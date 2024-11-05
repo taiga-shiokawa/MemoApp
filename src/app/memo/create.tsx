@@ -17,7 +17,7 @@ const correctText = async (text: string): Promise<string> => {
         'Authorization': `Bearer ${process.env.EXPO_PUBLIC_OPENAI_API_KEY}`,
       },
       body: JSON.stringify({
-        model: "gpt-3.5-turbo",
+        model: "gpt-4-turbo-preview",
         messages: [
           {
             role: "system",
