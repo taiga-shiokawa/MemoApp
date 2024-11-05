@@ -1,8 +1,10 @@
 import { Alert, StyleSheet, Text, View } from "react-native";
 import Button from "../../components/Button";
-import { router } from "expo-router";
+import { router, SplashScreen } from "expo-router";
 import { signInAnonymously } from "@firebase/auth";
 import { auth } from "../../config";
+
+SplashScreen.preventAutoHideAsync();
 
 // 通常ログイン
 // const handlePress =(email: string, password: string): void => {
@@ -83,11 +85,13 @@ const LogIn = (): JSX.Element => {
   return (
     <View style={styles.container}>
       <View style={styles.inner}>
-        <Text style={styles.title}>ゴジオケへようこそ </Text>
-        <Button 
-          label="タップしてはじめる" 
-          onPress={handleAnonymousLogin}
-        />
+        <Text style={styles.title} >ゴジオケへようこそ </Text>
+        <View>
+          <Button 
+            label="タップしてはじめる" 
+            onPress={handleAnonymousLogin}
+          />
+        </View>
       </View>
     </View>
   );
@@ -97,16 +101,27 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#F0F4F8",
+    // 中央寄せのために追加
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: "-10%",
   },
   inner: {
     paddingVertical: 24,
     paddingHorizontal: 27,
+    // 必要に応じて幅を設定
+    width: '100%',
+    // 中央寄せのために追加
+    alignItems: 'center',
   },
   title: {
     fontSize: 24,
     lineHeight: 32,
     fontWeight: "bold",
     marginBottom: 24,
+    // テキストを中央寄せにする場合
+    textAlign: 'center',
+    fontFamily: 'Noto_Sans_JP', 
   },
   input: {
     backgroundColor: "#ffffff",

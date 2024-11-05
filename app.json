@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "MemoApp",
-    "slug": "MemoApp",
+    "name": "ゴジオケ",
+    "slug": "gojiok",
     "version": "1.0.0",
     "scheme": "memo-app",
     "orientation": "portrait",
@@ -9,16 +9,21 @@
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/splash.png",
-      "resizeMode": "contain",
+      "resizeMode": "cover",
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": false,
+      "bundleIdentifier": "ai.gojiok",
+      "buildNumber": "1.0.0"
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "package": "ai.gojiok",
+        "versionCode": 1,
+        "permissions": [],
+        "foregroundImage": "./assets/icon_adaptive_foreground.png",
+        "backgroundImage": "./assets/icon_adaptive_background.png"
       }
     },
     "web": {

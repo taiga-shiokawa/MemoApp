@@ -1,6 +1,6 @@
 import { Alert, StyleSheet, Text, TouchableOpacity } from "react-native"
 import { auth, db } from "../config"
-import { deleteUser, signInAnonymously } from "@firebase/auth"
+import { deleteUser } from "@firebase/auth"
 import { router } from "expo-router";
 import { collection, deleteDoc, getDocs } from "firebase/firestore";
 
@@ -47,10 +47,10 @@ const handleDeleteAccount = async () => {
             await deleteUser(user);
 
             // 新しい匿名アカウントを作成
-            await signInAnonymously(auth);
+            // await signInAnonymously(auth);
             
             // ホーム画面に戻る
-            router.replace("/memo/list");
+            router.replace("/auth/log_in");
 
             // 完了通知
             Alert.alert(
