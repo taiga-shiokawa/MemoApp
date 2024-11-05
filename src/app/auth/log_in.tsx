@@ -1,68 +1,93 @@
-import { Alert, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { Alert, StyleSheet, Text, View } from "react-native";
 import Button from "../../components/Button";
 import { router } from "expo-router";
-import { useState } from "react";
-import { signInWithEmailAndPassword } from "@firebase/auth";
+import { signInAnonymously } from "@firebase/auth";
 import { auth } from "../../config";
 
-const handlePress =(email: string, password: string): void => {
-  // ログイン処理
-  signInWithEmailAndPassword(auth, email, password)
-    .then((userCredential) => {
-      console.log(userCredential.user.uid);
-      router.replace("/memo/list");
-    })
-    .catch((error) => {
-      const { code, message } = error;
-      console.log(code, message);
-      Alert.alert(message);
-    })
-}
+// 通常ログイン
+// const handlePress =(email: string, password: string): void => {
+//   // ログイン処理
+//   signInWithEmailAndPassword(auth, email, password)
+//     .then((userCredential) => {
+//       console.log(userCredential.user.uid);
+//       router.replace("/memo/list");
+//     })
+//     .catch((error) => {
+//       const { code, message } = error;
+//       console.log(code, message);
+//       Alert.alert(message);
+//     })
+// }
 
-const goToSignUp = (): void => {
-  router.replace("/auth/sign_up");
-}
+// 匿名ログイン
 
+const handleAnonymousLogin = async (): Promise<void> => {
+  try {
+    const userCredential = await signInAnonymously(auth);
+    console.log("Anonymous login successful:", userCredential.user.uid);
+    router.replace("/memo/list");
+  } catch (error) {
+    console.error("Anonymous login error:", error);
+    Alert.alert("エラー", "ログインに失敗しました。もう一度お試しください。");
+  }
+};
+
+// 通常ログイン
+// const LogIn = (): JSX.Element => {
+//   const [email, setEmail] = useState("");
+//   const [password, setPassword] = useState("");
+
+//   return (
+//     <View style={styles.container}>
+
+//       {/* Title */}
+//       <View style={styles.inner}>
+//         <Text style={styles.title}>LogIn</Text>
+//         {/* Input */}
+//         <TextInput 
+//           style={styles.input} 
+//           value={email}
+//           onChangeText={(text) => {setEmail(text)}}
+//           autoCapitalize="none"
+//           keyboardType="email-address"
+//           placeholder="Email address"
+//           textContentType="emailAddress"
+//         />
+//         <TextInput 
+//           style={styles.input} 
+//           value={password} 
+//           onChangeText={(text) => {setPassword(text)}}
+//           autoCapitalize="none"
+//           secureTextEntry
+//           placeholder="Password"
+//           textContentType="password"
+//         />
+//         {/* 送信ボタン */}
+//         <Button label="submit" onPress={() => {handlePress(email, password)}}/>
+
+//         {/* アサインアップページへ遷移 */}
+//         <View style={styles.footer}>
+//           <Text style={styles.footerText}>Not registered?</Text>
+//           <TouchableOpacity onPress={goToSignUp}>
+//             <Text style={styles.footerLink}>Sign up here!</Text>
+//           </TouchableOpacity>
+//         </View>
+
+//       </View>
+//     </View>
+//   );
+// };
+
+// 匿名ログイン
 const LogIn = (): JSX.Element => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
   return (
     <View style={styles.container}>
-
-      {/* Title */}
       <View style={styles.inner}>
-        <Text style={styles.title}>LogIn</Text>
-        {/* Input */}
-        <TextInput 
-          style={styles.input} 
-          value={email}
-          onChangeText={(text) => {setEmail(text)}}
-          autoCapitalize="none"
-          keyboardType="email-address"
-          placeholder="Email address"
-          textContentType="emailAddress"
+        <Text style={styles.title}>ゴジオケへようこそ </Text>
+        <Button 
+          label="タップしてはじめる" 
+          onPress={handleAnonymousLogin}
         />
-        <TextInput 
-          style={styles.input} 
-          value={password} 
-          onChangeText={(text) => {setPassword(text)}}
-          autoCapitalize="none"
-          secureTextEntry
-          placeholder="Password"
-          textContentType="password"
-        />
-        {/* 送信ボタン */}
-        <Button label="submit" onPress={() => {handlePress(email, password)}}/>
-
-        {/* アサインアップページへ遷移 */}
-        <View style={styles.footer}>
-          <Text style={styles.footerText}>Not registered?</Text>
-          <TouchableOpacity onPress={goToSignUp}>
-            <Text style={styles.footerLink}>Sign up here!</Text>
-          </TouchableOpacity>
-        </View>
-
       </View>
     </View>
   );
@@ -105,6 +130,12 @@ const styles = StyleSheet.create({
     fontSize: 14,
     lineHeight: 24,
     color: "#467FD3",
+  },
+  subtitle: {
+    fontSize: 14,
+    lineHeight: 24,
+    color: "#666666",
+    marginBottom: 24,
   },
 });
 

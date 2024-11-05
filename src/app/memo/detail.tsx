@@ -22,6 +22,7 @@ const Detail = (): JSX.Element => {
     const unsubscribe = onSnapshot(ref, (memoDoc) => {
       console.log(memoDoc.data());
       const { bodyText, updatedAt } = memoDoc.data() as Memo;
+      if (bodyText === null || bodyText === undefined || updatedAt === null || updatedAt === undefined) { return null }
       setMemo({
         id: memoDoc.id,
         bodyText,
