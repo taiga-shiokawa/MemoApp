@@ -20,17 +20,21 @@ const Detail = (): JSX.Element => {
     if (auth.currentUser === null) { return }
     const ref = doc(db, `users/${auth.currentUser?.uid}/memos`, String(id)); 
     const unsubscribe = onSnapshot(ref, (memoDoc) => {
-      console.log(memoDoc.data());
-      const { bodyText, updatedAt } = memoDoc.data() as Memo;
-      if (bodyText === null || bodyText === undefined || updatedAt === null || updatedAt === undefined) { return null }
+      const data = memoDoc.data();
+      // データが存在しない場合の処理を追加
+      if (!data) { 
+        console.log('No such document!');
+        return;
+      }
       setMemo({
         id: memoDoc.id,
-        bodyText,
-        updatedAt,
+        bodyText: data.bodyText,
+        updatedAt: data.updatedAt
       });
-      return unsubscribe;
     });
-  }, []);
+    // cleanup function を正しく返す
+    return () => unsubscribe();
+  }, [id]); // id を依存配列に追加
 
   return (
     <View style={styles.container}>

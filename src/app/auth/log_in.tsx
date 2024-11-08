@@ -1,10 +1,10 @@
 import { Alert, StyleSheet, Text, View } from "react-native";
 import Button from "../../components/Button";
-import { router, SplashScreen } from "expo-router";
+import { router } from "expo-router";
 import { signInAnonymously } from "@firebase/auth";
 import { auth } from "../../config";
 
-SplashScreen.preventAutoHideAsync();
+// SplashScreen.preventAutoHideAsync();
 
 // 通常ログイン
 // const handlePress =(email: string, password: string): void => {

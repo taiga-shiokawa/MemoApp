@@ -27,24 +27,25 @@ const List = (): JSX.Element => {
 
   // メモの監視
   useEffect(() => {
-    if (auth.currentUser === null) {
-      return;
-    }
+    if (auth.currentUser === null) { return }
     const ref = collection(db, `users/${auth.currentUser?.uid}/memos`);
-    const q = query(ref, orderBy("updatedAt", "desc")); // ここに並び順など追加できる
+    const q = query(ref, orderBy("updatedAt", "desc"));
     const unsubscribe = onSnapshot(q, (snapshot) => {
       const remoteMemos: Memo[] = [];
       snapshot.forEach((doc) => {
-        const { bodyText, updatedAt } = doc.data();
-        remoteMemos.push({
-          id: doc.id,
-          bodyText,
-          updatedAt,
-        });
+        const data = doc.data();
+        // データの存在確認を追加
+        if (data && data.bodyText && data.updatedAt) {
+          remoteMemos.push({
+            id: doc.id,
+            bodyText: data.bodyText,
+            updatedAt: data.updatedAt
+          });
+        }
       });
       setMemos(remoteMemos);
     });
-    return unsubscribe; // 監視をキャンセル
+    return () => unsubscribe();
   }, []);
 
   return (
